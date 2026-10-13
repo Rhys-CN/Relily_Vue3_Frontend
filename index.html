@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" href="/favicon.ico">
+  <title>%VITE_APP_TITLE%</title>
+  <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
+  <style>
+    html,
+    body,
+    #app {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .chromeframe {
+      margin: 0.2em 0;
+      background: #ccc;
+      color: #000;
+      padding: 0.2em 0;
+    }
+
+    /* ====== 化妆品玫瑰风加载界面 ====== */
+    #loader-wrapper {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      overflow: hidden;
+      background: linear-gradient(160deg, #fff7f8 0%, #ffeef1 50%, #fff7f8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 柔和星光 */
+    #loader-wrapper .loader-stars {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 25%, rgba(249, 116, 143, 0.6) 50%, transparent 51%),
+        radial-gradient(1px 1px at 32% 65%, rgba(216, 68, 110, 0.4) 50%, transparent 51%),
+        radial-gradient(1px 1px at 48% 18%, rgba(249, 116, 143, 0.55) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 63% 72%, rgba(244, 148, 166, 0.6) 50%, transparent 51%),
+        radial-gradient(1px 1px at 78% 30%, rgba(216, 68, 110, 0.4) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 88% 60%, rgba(249, 116, 143, 0.55) 50%, transparent 51%),
+        radial-gradient(1px 1px at 25% 85%, rgba(216, 68, 110, 0.4) 50%, transparent 51%),
+        radial-gradient(1px 1px at 70% 85%, rgba(249, 116, 143, 0.35) 50%, transparent 51%);
+      background-size: 340px 340px, 260px 260px, 300px 300px, 400px 400px, 320px 320px, 360px 360px, 280px 280px, 380px 380px;
+      opacity: 0.5;
+    }
+
+    /* 轨道加载器 */
+    #loader-wrapper .orbiter {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin-bottom: 48px;
+    }
+
+    /* 轨道环 */
+    #loader-wrapper .orbiter-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(249, 116, 143, 0.18);
+      box-shadow: inset 0 0 20px rgba(249, 116, 143, 0.08);
+    }
+
+    /* 轨道上旋转的发光卫星 */
+    #loader-wrapper .orbiter-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 14px;
+      height: 14px;
+      margin: -7px 0 0 -7px;
+      border-radius: 50%;
+      background: #f9748f;
+      box-shadow: 0 0 12px #f9748f, 0 0 28px rgba(249, 116, 143, 0.8);
+      animation: orbit 1.6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    }
+
+    #loader-wrapper .orbiter-dot.dot-2 {
+      width: 8px;
+      height: 8px;
+      margin: -4px 0 0 -4px;
+      background: #f78ca0;
+      box-shadow: 0 0 10px #f78ca0, 0 0 20px rgba(247, 140, 160, 0.8);
+      animation-duration: 2.4s;
+      animation-direction: reverse;
+    }
+
+    @keyframes orbit {
+      0% {
+        transform: rotate(0deg) translateX(75px);
+      }
+      100% {
+        transform: rotate(360deg) translateX(75px);
+      }
+    }
+
+    /* 中心发光点 */
+    #loader-wrapper .orbiter-core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      margin: -3px 0 0 -3px;
+      border-radius: 50%;
+      background: #ffc4d0;
+      box-shadow: 0 0 16px rgba(249, 116, 143, 0.9);
+      animation: coreGlow 1.6s ease-in-out infinite;
+    }
+
+    @keyframes coreGlow {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    /* 标题文字 */
+    #loader-wrapper .load_title {
+      text-align: center;
+      font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 8px;
+      color: #b8576d;
+      text-indent: 8px;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* 进度条 */
+    #loader-wrapper .progress-track {
+      width: 220px;
+      height: 2px;
+      background: rgba(249, 116, 143, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    #loader-wrapper .progress-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #f78ca0, #d0446e, #f78ca0);
+      background-size: 200% 100%;
+      animation: progressSweep 1.6s linear infinite;
+      border-radius: 2px;
+    }
+
+    @keyframes progressSweep {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 200% 0;
+      }
+    }
+
+    /* 隐藏加载层 */
+    .loaded #loader-wrapper {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease-out 0.2s, visibility 0s linear 0.8s;
+    }
+
+    .no-js #loader-wrapper {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="loader-wrapper">
+      <div class="loader-stars"></div>
+      <div class="orbiter">
+        <div class="orbiter-ring"></div>
+        <div class="orbiter-dot"></div>
+        <div class="orbiter-dot dot-2"></div>
+        <div class="orbiter-core"></div>
+      </div>
+      <div class="load_title">芮丽预约系统加载中</div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
